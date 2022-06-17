@@ -1,0 +1,68 @@
+{
+    "nodes": [
+        {
+            "id": "Myriel",
+            "label": "Myriel"
+        }, 
+        {
+            "id": "Napoleon"
+        },
+        {
+            "id": "Mlle.Baptistine"
+        },
+        {
+            "id": "Mme.Magloire"
+        },
+        {
+            "id": "CountessdeLo"
+        },
+        {
+            "id": "Valjean"
+        },
+        {
+            "id": "Labarre"
+        }
+    ],
+    "edges": [
+        {
+            "source": "Napoleon",
+            "target": "Myriel",
+            "value": 1
+        },
+        {
+            "source": "Mlle.Baptistine",
+            "target": "Myriel",
+            "value": 8
+        },
+        {
+            "source": "Mme.Magloire",
+            "target": "Myriel",
+            "value": 10
+        },
+        {
+            "source": "Mme.Magloire",
+            "target": "Mlle.Baptistine",
+            "value": 6
+        },
+        {
+            "source": "CountessdeLo",
+            "target": "Myriel",
+            "value": 1
+        },
+        {
+            "source": "Valjean",
+            "target": "Labarre",
+            "value": 1
+        },
+        {
+            "source": "Valjean",
+            "target": "Napoleon",
+            "value": 1
+        },
+        {
+            "source": "Valjean",
+            "target": "Mme.Magloire",
+            "value": 3
+        }
+    ]
+}

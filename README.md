@@ -1,1 +1,1 @@
-# graphin-demo
+## 基于[@antv/g6](https://github.com/antvis/G6)，参考[graphin](https://graphin.antv.vision)实现的图应用demo
