@@ -2,13 +2,13 @@ import { Layout } from '@arco-design/web-react';
 import Graphin from './graphin/Graphin';
 // import { IconHome, IconCalendar, IconCaretRight, IconCaretLeft } from '@arco-design/web-react/icon';
 import { cloneDeep } from 'lodash';
-// import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid';
 import React from 'react';
 import graphData from './data.json';
 
 function MainLayout() {
 
-  const [data, /* setData */] = React.useState(() => cloneDeep(graphData));
+  const [data, setData] = React.useState(() => cloneDeep(graphData));
 
 
   React.useEffect(() => {
@@ -64,7 +64,21 @@ function MainLayout() {
             padding: '75px 15px 15px 63px'
           }}
         >
-          <Graphin data={data} />
+          <Graphin
+            data={data}
+            layout={{
+              preventOverlap: true,
+              linkDistance: 200,
+              nodeStrength: -200,
+              // edgeStrength: 1,
+              nodeSpacing: 100,
+              workerEnabled: true,
+              onLayoutEnd: () => {
+                console.log('========= on layout end =========');
+                // this.setState({ loading: false });
+              }
+            }}
+          />
         </Layout.Content>
       </Layout>
     </Layout>

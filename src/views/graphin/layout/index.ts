@@ -1,5 +1,6 @@
 import G6, { Graph } from "@antv/g6";
 import Graphin from "../Graphin";
+import { LayoutTypeKeys } from "../types";
 import defaultOptions, { LayoutType } from './options';
 
 // const FORCE_LAYOUTS = ['force', 'graphin-force', 'g6force', 'gForce', 'comboForce'];
@@ -71,7 +72,25 @@ class LayoutController {
   }
 
   changeLayout() {
-
+    const { graph, data, layoutCache } = this.graphin;
+    if (
+      !graph ||
+      graph.destroyed ||
+      !data ||
+      !data.nodes ||
+      !data.nodes.length ||
+      (layoutCache && this.hasPosition())
+    ) {
+      return false;
+    }
+    if (LayoutTypeKeys.indexOf(this.options.type) !== -1) {
+      this.destroy();
+    }
+    /** 设置前置布局参数 */
+    this.prevOptions = { ...this.options };
+    /** 重新走初始化流程 */
+    this.init();
+    this.start();
   }
 
   updateOptions() {

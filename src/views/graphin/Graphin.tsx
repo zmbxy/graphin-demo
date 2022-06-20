@@ -89,15 +89,17 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
 
   height: number;
 
+  layoutCache: boolean;
+
   constructor(props: GraphinProps) {
     super(props);
 
-    const { width, height } = props;
+    const { width, height, layoutCache = true } = props;
     this.graph = {} as IGraph;
     this.layout = {} as LayoutController;
     this.width = Number(width);
     this.height = Number(height);
-
+    this.layoutCache = layoutCache;
     this.graphOptions = {} as GraphOptions;
 
     this.state = {
@@ -170,13 +172,14 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
     this.graph.on('afterrender', () => {
     })
 
+    this.graph.set('layoutController', null);
     // 装载数据
     this.graph.data(this.data as GraphData | TreeGraphData);
     // 渲染
     this.graph.render();
 
-      this.layout = new LayoutController(this);
-      this.layout.start();
+    this.layout = new LayoutController(this);
+    this.layout.start();
 
     // 初始化状态
     this.initStatus();

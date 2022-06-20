@@ -38,6 +38,8 @@ export interface GraphinProps {
   animate?: boolean;
   /** 图布局 */
   layout?: Layout,
+  /** 开启布局缓存设置 */
+  layoutCache?: boolean,
   /** 图布局后回调函数 */
   afterLayout?: (graph: Graph) => void;
 }
