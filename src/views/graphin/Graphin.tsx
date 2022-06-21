@@ -3,14 +3,14 @@ import { Spin } from '@arco-design/web-react';
 import { cloneDeep } from 'lodash';
 import React from 'react';
 import { deepEqual } from '../../utils';
+import { ResizeCanvas } from './behaviors';
 import './graphin.less';
 import GraphinContext from './GraphinContext';
 import LayoutController from './layout';
 import { GraphinData, GraphinProps } from './types';
 
 export interface GraphinState {
-  isReady: boolean;
-  loading: boolean,
+  layoutEnd: boolean,
   rendered: boolean,
   context: {
     graph: IGraph;
@@ -43,31 +43,6 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
   static registerBehavior(behaviorName: string, behavior: any) {
     G6.registerBehavior(behaviorName, behavior);
   }
-
-  // static registerFontFamily(iconLoader: IconLoader): { [icon: string]: any } {
-  //   /**  注册 font icon */
-  //   const iconFont = iconLoader();
-  //   const { glyphs, fontFamily } = iconFont;
-  //   const icons = glyphs.map(item => {
-  //     return {
-  //       name: item.name,
-  //       unicode: String.fromCodePoint(item.unicode_decimal),
-  //     };
-  //   });
-
-  //   return new Proxy(icons, {
-  //     get: (target, propKey: string) => {
-  //       const matchIcon = target.find(icon => {
-  //         return icon.name === propKey;
-  //       });
-  //       if (!matchIcon) {
-  //         console.error(`%c fontFamily:${fontFamily},does not found ${propKey} icon`);
-  //         return '';
-  //       }
-  //       return matchIcon?.unicode;
-  //     },
-  //   });
-  // }
 
   static registerLayout(layoutName: string, layout: any) {
     G6.registerLayout(layoutName, layout);
@@ -103,8 +78,7 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
     this.graphOptions = {} as GraphOptions;
 
     this.state = {
-      isReady: false,
-      loading: false, // 初次加载时，显示loading，知道初次布局完成后
+      layoutEnd: false, // 初次加载时，显示loading，知道初次布局完成后
       rendered: false, // 图是否已渲染完毕，控制图的更新频率，防止图未更新完毕，下一次数据更新又开始重新计算
       context: {
         graph: {} as IGraph,
@@ -147,21 +121,25 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
       width: this.width,
       height: this.height,
       animate: animate !== false,
-      // layout: {
-      //   type: 'force',
-      //   preventOverlap: true,
-      //   linkDistance: 200,
-      //   nodeStrength: -200,
-      //   // edgeStrength: 1,
-      //   nodeSpacing: 100,
-      //   workerEnabled: true,
-      //   onLayoutEnd: () => {
-      //     console.log('========= on layout end =========');
-      //     this.setState({ loading: false });
-      //   }
-      // },
+      fitView: true,
+      layout: {
+        type: 'force',
+        preventOverlap: true,
+        linkDistance: 200,
+        nodeStrength: -200,
+        // edgeStrength: 1,
+        nodeSpacing: 100,
+        workerEnabled: true,
+        onLayoutEnd: () => {
+          console.log('========= on layout end =========');
+          this.setState({ layoutEnd: true });
+        }
+      },
+      defaultNode: {
+        size: 100,
+      },
       modes: {
-        default: ['drag-node']
+        default: ['drag-node', 'zoom-canvas', 'drag-canvas']
       }
     } as GraphOptions;
 
@@ -172,21 +150,21 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
     this.graph.on('afterrender', () => {
     })
 
-    this.graph.set('layoutController', null);
+    // this.graph.set('layoutController', null);
     // 装载数据
     this.graph.data(this.data as GraphData | TreeGraphData);
     // 渲染
     this.graph.render();
 
-    this.layout = new LayoutController(this);
-    this.layout.start();
+    // this.layout = new LayoutController(this);
+    // this.layout.start();
+    // this.graph.fitView();
 
     // 初始化状态
     this.initStatus();
 
     // 设置context
     this.setState({
-      isReady: true,
       context: {
         graph: this.graph,
         layout: this.layout,
@@ -313,15 +291,24 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
 
     const { containerStyle } = this.props;
 
+    const { layoutEnd } = this.state;
+
     return (
       <GraphinContext.Provider value={this.state.context}>
         <div
           className="graphin-container"
           style={{ ...containerStyle }}
         >
-          <Spin dot block loading={this.state.loading}>
+          <Spin dot block loading={!this.state.layoutEnd}>
             <div className="graphin-core" ref={node => this.graphDOM = node} />
-            <div className="graphin-components" />
+            <div className="graphin-components">
+              {layoutEnd && (
+                <>
+                  <ResizeCanvas graphDOM={this.graphDOM as HTMLDivElement} />
+                  {this.props.children}
+                </>
+              )}
+            </div>
           </Spin>
         </div>
       </GraphinContext.Provider>

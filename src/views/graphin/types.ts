@@ -1,4 +1,5 @@
 import { Graph } from "@antv/g6";
+import { ReactNode } from "react";
 
 export interface GraphinData {
   nodes: any[];
@@ -42,4 +43,5 @@ export interface GraphinProps {
   layoutCache?: boolean,
   /** 图布局后回调函数 */
   afterLayout?: (graph: Graph) => void;
+  children?: ReactNode
 }

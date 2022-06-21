@@ -1,10 +1,11 @@
-import { Layout } from '@arco-design/web-react';
+import { Layout, Menu } from '@arco-design/web-react';
 import Graphin from './graphin/Graphin';
 // import { IconHome, IconCalendar, IconCaretRight, IconCaretLeft } from '@arco-design/web-react/icon';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
 import React from 'react';
 import graphData from './data.json';
+import ContextMenu from './graphin/components/ContextMenu';
 
 function MainLayout() {
 
@@ -69,16 +70,33 @@ function MainLayout() {
             layout={{
               preventOverlap: true,
               linkDistance: 200,
-              nodeStrength: -200,
+              nodeStrength: -150,
               // edgeStrength: 1,
-              nodeSpacing: 100,
+              nodeSpacing: 150,
               workerEnabled: true,
               onLayoutEnd: () => {
                 console.log('========= on layout end =========');
                 // this.setState({ loading: false });
               }
             }}
-          />
+          >
+            <ContextMenu bindType="canvas">
+              <Menu>
+                <Menu.Item key="1">ddd</Menu.Item>
+                <Menu.Item key="2">ddd</Menu.Item>
+                <Menu.Item key="3">ddd</Menu.Item>
+              </Menu>
+            </ContextMenu>
+            <ContextMenu bindType="node">
+              {() => (
+                <Menu>
+                  <Menu.Item key="1">ddd</Menu.Item>
+                  <Menu.Item key="2">ddd</Menu.Item>
+                  <Menu.Item key="3">ddd</Menu.Item>
+                </Menu>
+              )}
+            </ContextMenu>
+          </Graphin>
         </Layout.Content>
       </Layout>
     </Layout>
