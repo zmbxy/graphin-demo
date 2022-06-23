@@ -199,10 +199,10 @@ class LayoutController {
   }
 
   getDataFromGraph() {
-    const nodes = [];
-    const edges = [];
-    const combos = [];
-    const comboEdges = [];
+    const nodes: any[] = [];
+    const edges: any[] = [];
+    const combos: any[] = [];
+    const comboEdges: any[] = [];
     const nodeItems = this.graph.getNodes();
     const edgeItems = this.graph.getEdges();
     const comboItems = this.graph.getCombos();

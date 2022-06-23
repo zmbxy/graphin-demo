@@ -107,6 +107,7 @@ const useTooltip = (props: any) => {
   };
 
   useEffect(() => {
+    console.log('effect..bind....');
     graph.on((`${bindType}:mouseenter` as G6Event), show);
     graph.on((`${bindType}:mouseleave` as G6Event), handleClose);
     graph.on(`afterremoveitem`, handleClose);

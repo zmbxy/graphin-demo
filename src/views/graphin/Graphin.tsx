@@ -25,7 +25,6 @@ export interface GraphinState {
 export interface RegisterFunction {
   (name: string, options: { [key: string]: any }, extendName?: string): void;
 }
-
 class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
 
   static registerNode: RegisterFunction = (nodeName, options, extendedNodeName) => {
@@ -121,7 +120,7 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
       width: this.width,
       height: this.height,
       animate: animate !== false,
-      fitView: true,
+      // fitView: true,
       layout: {
         type: 'force',
         preventOverlap: true,
@@ -129,7 +128,8 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
         nodeStrength: -200,
         // edgeStrength: 1,
         nodeSpacing: 100,
-        workerEnabled: true,
+        // workerEnabled: true,
+        // workerScriptURL: `${process.env.PUBLIC_URL}/lib/layout.min.js`,
         onLayoutEnd: () => {
           console.log('========= on layout end =========');
           this.setState({ layoutEnd: true });

@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import getContainerStyles from "./getContainerStyles";
 import useTooltip from "./useTooltip";
+import './index.less';
 
 const defaultStyle: React.CSSProperties = {
   width: '120px',

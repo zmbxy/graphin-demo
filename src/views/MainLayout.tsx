@@ -2,14 +2,17 @@ import { Layout, Menu } from '@arco-design/web-react';
 import Graphin from './graphin/Graphin';
 // import { IconHome, IconCalendar, IconCaretRight, IconCaretLeft } from '@arco-design/web-react/icon';
 import { cloneDeep } from 'lodash';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import React from 'react';
 import graphData from './data.json';
 import ContextMenu from './graphin/components/ContextMenu';
+import Tooltip from './graphin/components/Tooltip';
+import Toolbar from './graphin/components/Toolbar';
+import MiniMap from './graphin/plugin/mini-map';
 
 function MainLayout() {
 
-  const [data, setData] = React.useState(() => cloneDeep(graphData));
+  const [data /* , setData */] = React.useState(() => cloneDeep(graphData));
 
 
   React.useEffect(() => {
@@ -80,6 +83,11 @@ function MainLayout() {
               }
             }}
           >
+            <Toolbar direction='horizontal'>
+              <Toolbar.Item>tesst</Toolbar.Item>
+              <Toolbar.Item>删除</Toolbar.Item>
+              <Toolbar.Item>增加</Toolbar.Item>
+            </Toolbar>
             <ContextMenu bindType="canvas">
               <Menu>
                 <Menu.Item key="1">ddd</Menu.Item>
@@ -96,7 +104,20 @@ function MainLayout() {
                 </Menu>
               )}
             </ContextMenu>
-          </Graphin>
+            <Tooltip>
+              {({ item, bindType, model, id }) => {
+                console.log(item, bindType, model, id);
+                return (
+                  <Menu>
+                    <Menu.Item key="1">ddd</Menu.Item>
+                    <Menu.Item key="2">ddd</Menu.Item>
+                    <Menu.Item key="3">ddd</Menu.Item>
+                  </Menu>
+                );
+              }}
+            </Tooltip>
+            <MiniMap visible={true} />
+           </Graphin>
         </Layout.Content>
       </Layout>
     </Layout>
