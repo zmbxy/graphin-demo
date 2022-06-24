@@ -8,6 +8,8 @@ import './graphin.less';
 import GraphinContext from './GraphinContext';
 import LayoutController from './layout';
 import { GraphinData, GraphinProps } from './types';
+import { RouteSVG } from './shape/svg';
+import transform from 'svg2base64';
 
 export interface GraphinState {
   layoutEnd: boolean,
