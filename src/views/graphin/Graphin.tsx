@@ -7,9 +7,12 @@ import { ResizeCanvas } from './behaviors';
 import './graphin.less';
 import GraphinContext from './GraphinContext';
 import LayoutController from './layout';
+import registerEdge from './shape/edge';
+import registerShape from './shape/node';
 import { GraphinData, GraphinProps } from './types';
-import { RouteSVG } from './shape/svg';
-import transform from 'svg2base64';
+
+registerShape();
+registerEdge();
 
 export interface GraphinState {
   layoutEnd: boolean,
@@ -126,9 +129,9 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
       layout: {
         type: 'force',
         preventOverlap: true,
-        linkDistance: 200,
-        nodeStrength: -200,
-        // edgeStrength: 1,
+        linkDistance: 180,
+        nodeStrength: -180,
+        edgeStrength: 0.15,
         nodeSpacing: 100,
         // workerEnabled: true,
         // workerScriptURL: `${process.env.PUBLIC_URL}/lib/layout.min.js`,
@@ -138,7 +141,17 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
         }
       },
       defaultNode: {
+        // type: 'protect-unit',
+        type: 'execute-unit',
         size: 100,
+        expand: true,
+      },
+      defaultEdge: {
+        type: 'state-link',
+        style: {
+          lineWidth: 3.5,
+          lineAppendWidth: 5,
+        }
       },
       modes: {
         default: ['drag-node', 'zoom-canvas', 'drag-canvas']

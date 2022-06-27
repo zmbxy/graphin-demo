@@ -23,21 +23,18 @@ const defaultOptions: Partial<Options> = {
 
 const svg2Base64 = (svg: string, options?: Options): string => {
 
+  let targetSVG = svg;
+
   const { css } = {
     ...defaultOptions,
     ...options,
   }
 
   if (!isEmpty(css)) {
-
+    targetSVG = appendDefs(svg, css);
   }
 
-  const file = new File([RouteSVG], 'route.svg');
-
-  // const reader = new FileReaderSync();
-
-
-  return '';
+  return `data:image/svg+xml;base64,${window.btoa(targetSVG)}`;
 }
 
 const appendDefs = (source, css) => {
@@ -50,7 +47,7 @@ const appendDefs = (source, css) => {
 
   styleNode.setAttribute('type', 'text/css');
   styleNode.appendChild(cdata);
-  
+
   return svgNode.toString();
 }
 
