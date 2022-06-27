@@ -9,6 +9,8 @@ import ContextMenu from './graphin/components/ContextMenu';
 import Tooltip from './graphin/components/Tooltip';
 import Toolbar from './graphin/components/Toolbar';
 import MiniMap from './graphin/plugin/mini-map';
+import svg2Base64 from './graphin/shape/svg2Base64';
+import { CenterAlign } from './graphin/shape/svg';
 
 function MainLayout() {
 
@@ -87,6 +89,7 @@ function MainLayout() {
               <Toolbar.Item>tesst</Toolbar.Item>
               <Toolbar.Item>删除</Toolbar.Item>
               <Toolbar.Item>增加</Toolbar.Item>
+              <Toolbar.Item><img src={svg2Base64(CenterAlign)} alt='' width={20}/></Toolbar.Item>
             </Toolbar>
             <ContextMenu bindType="canvas">
               <Menu>
@@ -117,7 +120,7 @@ function MainLayout() {
               }}
             </Tooltip>
             <MiniMap visible={true} />
-           </Graphin>
+          </Graphin>
         </Layout.Content>
       </Layout>
     </Layout>
