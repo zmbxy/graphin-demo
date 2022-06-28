@@ -2,10 +2,10 @@ import React from "react";
 
 const Item = (props: any) => {
 
-  const { onClick, children } = props;
+  const { onClick, children, title } = props;
 
   return (
-    <li onClick={onClick} onKeyDown={onClick}>
+    <li onClick={onClick} onKeyDown={onClick} title={title}>
       {children}
     </li>
   )

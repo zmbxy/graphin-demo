@@ -1,14 +1,21 @@
-import { isArray } from "lodash";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import GraphinContext from "../../GraphinContext";
 import Item from "./Item";
 import './index.less';
+
+export declare type ToolbarProps = {
+  style?: React.CSSProperties,
+  direction?: 'vertical' | 'horizontal',
+  options?: any[],
+  onChange?: (context, option) => void;
+  children?: React.ReactNode,
+}
 
 const defaultStyle: React.CSSProperties = {
   background: '#fff',
 };
 
-const Toolbar = (props) => {
+const Toolbar = (props: ToolbarProps) => {
 
   const { children, style = {}, direction = 'horizontal', options, onChange } = props;
   const graphin = useContext(GraphinContext);
@@ -47,7 +54,10 @@ const Toolbar = (props) => {
           ...style
         }}
       >
-        <ul className="graphin-components-toolbar-content" style={{ display: isHorizontal ? 'flex' : '' }}>
+        <ul
+          className="graphin-components-toolbar-content"
+          style={{ display: isHorizontal ? 'flex' : '' }}
+        >
           {options.map(option => {
             const { key, name } = option;
             return (
@@ -75,16 +85,12 @@ const Toolbar = (props) => {
       }}
       className="graphin-components-toolbar"
     >
-      {isArray(children) || (children && (children as JSX.Element).type === Item) ? (
-        <ul
-          style={{ display: isHorizontal ? 'flex' : '' }}
-          className="graphin-components-toolbar-content"
-        >
-          {children}
-        </ul>
-      ) : (
-        children
-      )}
+      <ul
+        className="graphin-components-toolbar-content"
+        style={isHorizontal ? { display: 'flex' } : {}}
+      >
+        {children}
+      </ul>
     </div>
   )
 }
