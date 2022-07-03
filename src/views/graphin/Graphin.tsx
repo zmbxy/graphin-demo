@@ -1,4 +1,9 @@
-import G6, { Graph as IGraph, GraphData, GraphOptions, TreeGraphData } from '@antv/g6';
+import G6, {
+  Graph as IGraph,
+  GraphData,
+  GraphOptions,
+  TreeGraphData,
+} from '@antv/g6';
 import { Spin } from '@arco-design/web-react';
 import { cloneDeep } from 'lodash';
 import React from 'react';
@@ -15,8 +20,8 @@ registerShape();
 registerEdge();
 
 export interface GraphinState {
-  layoutEnd: boolean,
-  rendered: boolean,
+  layoutEnd: boolean;
+  rendered: boolean;
   context: {
     graph: IGraph;
     // apis: ApisType;
@@ -31,16 +36,27 @@ export interface RegisterFunction {
   (name: string, options: { [key: string]: any }, extendName?: string): void;
 }
 class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
-
-  static registerNode: RegisterFunction = (nodeName, options, extendedNodeName) => {
+  static registerNode: RegisterFunction = (
+    nodeName,
+    options,
+    extendedNodeName
+  ) => {
     G6.registerNode(nodeName, options, extendedNodeName);
-  }
+  };
 
-  static registerEdge: RegisterFunction = (edgeName, options, extendedEdgeName) => {
+  static registerEdge: RegisterFunction = (
+    edgeName,
+    options,
+    extendedEdgeName
+  ) => {
     G6.registerEdge(edgeName, options, extendedEdgeName);
   };
 
-  static registerCombo: RegisterFunction = (comboName, options, extendedComboName) => {
+  static registerCombo: RegisterFunction = (
+    comboName,
+    options,
+    extendedComboName
+  ) => {
     G6.registerCombo(comboName, options, extendedComboName);
   };
 
@@ -88,22 +104,19 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
         graph: {} as IGraph,
         layout: this.layout,
         updateContext: this.updateContext,
-      }
-    }
+      },
+    };
   }
 
   initData = (data: GraphinProps['data']) => {
     // TODO 树图
     this.data = cloneDeep(data);
-  }
+  };
 
   /** 初始化状态 */
-  initStatus = () => {
-
-  }
+  initStatus = () => {};
 
   initGraphInstance = () => {
-
     const { data, width, height, animate } = this.props;
 
     /** width and height */
@@ -127,18 +140,23 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
       animate: animate !== false,
       // fitView: true,
       layout: {
-        type: 'force',
-        preventOverlap: true,
-        linkDistance: 180,
-        nodeStrength: -180,
-        edgeStrength: 0.15,
-        nodeSpacing: 100,
-        // workerEnabled: true,
-        // workerScriptURL: `${process.env.PUBLIC_URL}/lib/layout.min.js`,
-        onLayoutEnd: () => {
-          console.log('========= on layout end =========');
-          this.setState({ layoutEnd: true });
-        }
+        // type: 'force',
+        // preventOverlap: true,
+        // linkDistance: 180,
+        // nodeStrength: -180,
+        // edgeStrength: 0.15,
+        // nodeSpacing: 100,
+        // // workerEnabled: true,
+        // // workerScriptURL: `${process.env.PUBLIC_URL}/lib/layout.min.js`,
+        // onLayoutEnd: () => {
+        //   console.log('========= on layout end =========');
+        //   this.setState({ layoutEnd: true });
+        // },
+
+        type: 'fruchterman',
+        gravity: 2, // 可选
+        speed: 1, // 可选
+        gpuEnabled: true, // 可选，开启 GPU 并行计算，G6 4.0 支持
       },
       defaultNode: {
         // type: 'protect-unit',
@@ -151,19 +169,18 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
         style: {
           lineWidth: 3.5,
           lineAppendWidth: 5,
-        }
+        },
       },
       modes: {
-        default: ['drag-node', 'zoom-canvas', 'drag-canvas']
-      }
+        default: ['drag-node', 'zoom-canvas', 'drag-canvas'],
+      },
     } as GraphOptions;
 
     // new Graphin
     this.graph = new G6.Graph(this.graphOptions);
 
     // 内置事件：afterrender 回调
-    this.graph.on('afterrender', () => {
-    })
+    this.graph.on('afterrender', () => {});
 
     // this.graph.set('layoutController', null);
     // 装载数据
@@ -183,10 +200,10 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
       context: {
         graph: this.graph,
         layout: this.layout,
-        updateContext: this.updateContext
-      }
-    })
-  }
+        updateContext: this.updateContext,
+      },
+    });
+  };
 
   updateContext = (config: any) => {
     this.setState((prevState: any) => ({
@@ -195,7 +212,7 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
         ...config,
       },
     }));
-  }
+  };
 
   clear = () => {
     if (this.layout) {
@@ -205,7 +222,7 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
     this.graph!.clear();
     this.data = { nodes: [], edges: [], combos: [] };
     this.graph!.destroy();
-  }
+  };
 
   shouldUpdate(prevProps: GraphinProps, key: keyof GraphinProps) {
     const prevVal = prevProps[key];
@@ -229,7 +246,7 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
 
     // 数据发生变化
     if (isDataChange) {
-      console.log('========== data change ==========')
+      console.log('========== data change ==========');
       this.initData(data);
       // const { context } = this.state;
 
@@ -280,9 +297,12 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
           // 走G6的layoutController
           this.graph.emit('graphin:datachange');
           if (isLayoutChange) {
-            this.graph.emit('graphin:layoutchange', { prevLayout: prevProps.layout, layout });
+            this.graph.emit('graphin:layoutchange', {
+              prevLayout: prevProps.layout,
+              layout,
+            });
           }
-        },
+        }
       );
       return;
     }
@@ -294,7 +314,10 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
       this.layout.changeLayout();
       this.layout.refreshPosition();
       // 走G6的layoutController
-      this.graph.emit('graphin:layoutchange', { prevLayout: prevProps.layout, layout });
+      this.graph.emit('graphin:layoutchange', {
+        prevLayout: prevProps.layout,
+        layout,
+      });
     }
   }
 
@@ -303,19 +326,18 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
   }
 
   render(): React.ReactNode {
-
     const { containerStyle } = this.props;
 
     const { layoutEnd } = this.state;
 
     return (
       <GraphinContext.Provider value={this.state.context}>
-        <div
-          className="graphin-container"
-          style={{ ...containerStyle }}
-        >
-          <Spin dot block loading={!this.state.layoutEnd}>
-            <div className="graphin-core" ref={node => this.graphDOM = node} />
+        <div className="graphin-container" style={{ ...containerStyle }}>
+          <Spin dot block loading={false}>
+            <div
+              className="graphin-core"
+              ref={(node) => (this.graphDOM = node)}
+            />
             <div className="graphin-components">
               {layoutEnd && (
                 <>
@@ -327,7 +349,7 @@ class Graphin extends React.PureComponent<GraphinProps, GraphinState> {
           </Spin>
         </div>
       </GraphinContext.Provider>
-    )
+    );
   }
 }
 

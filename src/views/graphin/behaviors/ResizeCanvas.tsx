@@ -7,7 +7,6 @@ export interface ResizeCanvasProps {
 }
 
 const ResizeCanvas: React.FunctionComponent<ResizeCanvasProps> = (props) => {
-
   const { graphDOM } = props;
   const graphin = React.useContext(GraphinContext);
 
